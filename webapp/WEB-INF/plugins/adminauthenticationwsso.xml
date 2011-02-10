@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<plug-in>
+   <name>Admin Authentication WSSO</name>
+   <class>fr.paris.lutece.portal.service.plugin.PluginDefaultImplementation</class>
+   <version>2.0.7</version>
+   <description>adminauthenticationwsso.plugin.description</description>
+   <documentation></documentation>
+   <installation></installation>
+   <changes></changes>
+   <user-guide></user-guide>
+   <provider>adminauthenticationwsso.plugin.provider</provider>
+   <provider-url>http://lutece.paris.fr</provider-url>
+   <icon-url>images/admin/skin/plugins/mylutece/mylutece.png</icon-url>
+   <copyright>Copyright 2001-2009 Mairie de Paris</copyright>
+	<core-version-dependency>
+		<min-core-version></min-core-version>
+		<max-core-version></max-core-version>	
+	</core-version-dependency>
+	
+	<!-- if the plugin must have a connection pool with parameter : 1 - yes, 0 - no -->   
+   <db-pool-required>0</db-pool-required>
+   
+    <daemons>
+        <daemon>
+            <daemon-id>ExportWssoAdminUsersDaemon</daemon-id>
+            <daemon-name>adminauthenticationwsso.daemon.ExportWssoAdminUsersDaemon.name</daemon-name>
+            <daemon-description>adminauthenticationwsso.daemon.ExportWssoAdminUsersDaemon.description</daemon-description>
+            <daemon-class>fr.paris.lutece.plugins.adminauthenticationwsso.service.daemon.ExportWssoAdminUsersDaemon</daemon-class>
+        </daemon>
+    </daemons>
+   
+</plug-in>
