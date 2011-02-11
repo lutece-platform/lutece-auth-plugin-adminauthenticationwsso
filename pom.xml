@@ -38,6 +38,6 @@
     <scm>
         <connection>scm:svn:http://dev.lutece.paris.fr/svn/lutece/portal/trunk/plugins/authentication/plugin-adminauthenticationwsso</connection>
         <developerConnection>scm:svn:https://dev.lutece.paris.fr/svn/lutece/portal/trunk/plugins/authentication/plugin-adminauthenticationwsso</developerConnection>
-        <url>http://dev.lutece.paris.fr/viewvc/portal/trunk/plugins/authentication/plugin-adminauthenticationwsso</url>
+        <url>http://dev.lutece.paris.fr/viewvc/lutece/portal/trunk/plugins/authentication/plugin-adminauthenticationwsso</url>
     </scm>
 </project>
