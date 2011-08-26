@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <document>
 	<properties>
-		<title>Introduction</title>
+		<title>Plugin adminauthenticationwsso</title>
 	</properties>
 	<body>
-		<section name="Plugin description">
+		<section name="Plugin adminauthenticationwsso">
 			<subsection name="Introduction">
 				<p>
 				Authentification via WSSO for the back-office.
