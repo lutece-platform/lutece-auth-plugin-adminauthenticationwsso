@@ -33,24 +33,23 @@
  */
 package fr.paris.lutece.plugins.adminauthenticationwsso.service;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+
 import fr.paris.lutece.portal.business.user.AdminUser;
+import fr.paris.lutece.portal.business.user.AdminUserFilter;
 import fr.paris.lutece.portal.business.user.AdminUserHome;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPathService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.util.xml.XmlUtil;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
 
 
 /**
@@ -100,8 +99,12 @@ public class WssoAdminUsersFileGeneratorService
         StringBuffer strXml = new StringBuffer(  );
         Date date = new Date(  );
         HashMap attrList = new HashMap(  );
-        Collection<AdminUser> userList = AdminUserHome.findUserList(  );
-        //AdminAuthentication auth = new AdminWssoAuthentication(  );
+        // get only active users to export to wsso
+        AdminUserFilter auFilter = new AdminUserFilter();
+		auFilter.init();
+		auFilter.setStatus(AdminUser.ACTIVE_CODE);
+		Collection<AdminUser> userList = AdminUserHome.findUserByFilter(auFilter);
+		//AdminAuthentication auth = new AdminWssoAuthentication(  );
         //Collection<AdminWssoUser> userList = auth.getUserList( "", "", "" );
 
         //Open AutorisationWsso
