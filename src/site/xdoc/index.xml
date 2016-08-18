@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <document>
-	<properties>
-		<title>Plugin adminauthenticationwsso</title>
-	</properties>
-	<body>
-		<section name="Plugin adminauthenticationwsso">
-			<subsection name="Introduction">
-				<p>
-				Authentification via WSSO for the back-office.
-				</p>
-			</subsection>
-		</section>
-	</body>
+    <properties>
+        <title>Plugin adminauthenticationwsso</title>
+    </properties>
+    <body>
+        <section name="Plugin adminauthenticationwsso">
+            <subsection name="Introduction">
+                <p>
+                    Back-office authentication based on Web Single-Sign-On.
+                </p>
+            </subsection>
+        </section>
+    </body>
 </document>

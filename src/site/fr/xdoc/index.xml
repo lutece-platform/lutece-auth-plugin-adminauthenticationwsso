@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <document>
-	<properties>
-		<title>Plugin adminauthenticationwsso</title>
-	</properties>
-	<body>
-		<section name="Plugin adminauthenticationwsso">
-			<subsection name="Introduction">
-				<p>
-				Permet de fournir une authentificatino via WSSO pour le back-office Lutece.
-				</p>
-			</subsection>
-		</section>
-	</body>
+    <properties>
+        <title>Plugin adminauthenticationwsso</title>
+    </properties>
+    <body>
+        <section name="Plugin adminauthenticationwsso">
+            <subsection name="Introduction">
+                <p>
+                    Module d'authentification pour le Back Office Lutece basé sur un Web-SSO.
+                </p>
+            </subsection>
+        </section>
+    </body>
 </document>
