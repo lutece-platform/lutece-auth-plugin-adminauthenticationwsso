@@ -202,7 +202,7 @@ public class WssoAdminUserImportService extends ImportAdminUserService
         if ( userList.isEmpty( ) )
         {
             Object [ ] args = {
-                    nLineNumber, strEmail
+                   strEmail
             };
             String strErrorMessage = I18nService.getLocalizedString( MESSAGE_ERROR_USER_EMAIL_NOT_FOUND, args, locale );
             listMessages.add( new CSVMessageDescriptor(CSVMessageLevel.ERROR, nLineNumber , strErrorMessage ) );
@@ -210,7 +210,7 @@ public class WssoAdminUserImportService extends ImportAdminUserService
         else if ( userList.size( ) > 1 )
         {
             Object [ ] args = {
-                    nLineNumber, strEmail
+                   strEmail
             };
             String strErrorMessage = I18nService.getLocalizedString( MESSAGE_ERROR_SEVERAL_SAME_EMAIL, args, locale );
             listMessages.add( new CSVMessageDescriptor(CSVMessageLevel.ERROR, nLineNumber , strErrorMessage ) );
