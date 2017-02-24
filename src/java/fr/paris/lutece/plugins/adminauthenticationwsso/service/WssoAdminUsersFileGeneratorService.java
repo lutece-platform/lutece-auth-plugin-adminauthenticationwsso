@@ -33,7 +33,6 @@
  */
 package fr.paris.lutece.plugins.adminauthenticationwsso.service;
 
-import fr.paris.lutece.plugins.adminauthenticationwsso.AdminWssoAuthentication;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -47,11 +46,12 @@ import fr.paris.lutece.portal.business.user.AdminUser;
 import fr.paris.lutece.portal.business.user.AdminUserFilter;
 import fr.paris.lutece.portal.business.user.AdminUserHome;
 import fr.paris.lutece.portal.service.plugin.Plugin;
-import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPathService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.util.xml.XmlUtil;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -82,9 +82,9 @@ public class WssoAdminUsersFileGeneratorService
     private static final String LOG_MESSAGE_OK = "\nWssoAdminUserFileGeneratorService : Update OK for file ";
     private static final String LOG_MESSAGE_NOK = "\nWssoAdminUserFileGeneratorService : Error when updating file ";
     
-    //Beans
-    private static final String BEAN_ADMIN_AUTHENTICATION_MODULE = "adminAuthenticationModule";
-
+    //Regex
+    private static final String REGEX_WSSO_ID = AppPropertiesService.getProperty( "adminauthenticationwsso.wssoid.regex" );
+    
     /**
      *
      * Creates a new instance of WssoAdminUsersFileGeneratorService
@@ -138,20 +138,18 @@ public class WssoAdminUsersFileGeneratorService
         attrList.clear(  );
 
         //Add list of allowedUser
-        AdminWssoAuthentication adminWssoAuthentication = (AdminWssoAuthentication) SpringContextService.getBean( BEAN_ADMIN_AUTHENTICATION_MODULE );
-        
+        Pattern pattern = Pattern.compile( REGEX_WSSO_ID );
         for ( AdminUser user : userList )
         {
-            //check this user access code exists in WSSO LDAP for a given WSSOID
-            AdminUser userWsso = adminWssoAuthentication.getUserPublicData( user.getAccessCode( ) );
-            if (userWsso != null)
+            Matcher matcher = pattern.matcher( user.getAccessCode( ) );
+            if ( matcher.matches( ) )
             {
                 attrList.put( AppPropertiesService.getProperty( PROPERTY_XMLFILEFORMAT_ATTR_ALLOWED_USER_WSSO_GUID ),
                 user.getAccessCode(  ) );
                 XmlUtil.addEmptyElement( strXml, AppPropertiesService.getProperty( PROPERTY_XMLFILEFORMAT_ALLOWED_USER ),
                 attrList );
                 attrList.clear(  );
-            }   
+            }
         }
 
         //Close applicationWsso
@@ -167,7 +165,7 @@ public class WssoAdminUsersFileGeneratorService
      * Create or update the XML file with the getXml content
      *
      * @param plugin the plugin
-     */
+     */           
     public static String createXmlFile( Plugin plugin )
     {
         FileWriter fileXmlWriter = null;

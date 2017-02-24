@@ -33,8 +33,8 @@
  */
 package fr.paris.lutece.plugins.adminauthenticationwsso.service;
 
-import fr.paris.lutece.plugins.adminauthenticationwsso.AdminWssoAuthentication;
 import fr.paris.lutece.plugins.adminauthenticationwsso.AdminWssoUser;
+import fr.paris.lutece.plugins.adminauthenticationwsso.util.WssoLdapUtil;
 import fr.paris.lutece.portal.business.user.AdminUser;
 import fr.paris.lutece.portal.business.user.AdminUserHome;
 import fr.paris.lutece.portal.business.user.attribute.AdminUserField;
@@ -60,20 +60,17 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import javax.naming.directory.DirContext;
 import org.apache.commons.lang.StringUtils;
 
 
 public class WssoAdminUserImportService extends ImportAdminUserService
 {
-    
-    //Beans 
-    private static final String BEAN_ADMIN_AUTHENTICATION_MODULE = "adminAuthenticationModule";
     
     //Constants
     private static final String CONSTANT_RIGHT = "right";
@@ -92,7 +89,7 @@ public class WssoAdminUserImportService extends ImportAdminUserService
     private static final String MESSAGE_ERROR_SEVERAL_SAME_EMAIL = "adminauthenticationwsso.import_users_from_file.manyUsersWithThisEmail";
     
     
-    
+    private static DirContext _context;
     private static final AttributeService _attributeService = AttributeService.getInstance( );
     
     /**
@@ -101,9 +98,16 @@ public class WssoAdminUserImportService extends ImportAdminUserService
     @Override
     protected List<CSVMessageDescriptor> readLineOfCSVFile( String [ ] strLineDataArray, int nLineNumber, Locale locale, String strBaseUrl )
     {
+        if ( nLineNumber == 1)
+        {
+            _context = WssoLdapUtil.getNewContext( );
+        }
+        
         List<CSVMessageDescriptor> listMessages = new ArrayList<CSVMessageDescriptor>( );
         int nIndex = 0;
         
+        String strLastName = strLineDataArray [nIndex++];
+        String strFirstName = strLineDataArray [nIndex++];
         String strEmail = strLineDataArray [nIndex++];
 
         boolean bUpdateUser = getUpdateExistingUsers( );
@@ -196,8 +200,7 @@ public class WssoAdminUserImportService extends ImportAdminUserService
             user = new LuteceDefaultAdminUser( );
         }
         
-        AdminWssoAuthentication adminWssoAuthentication = (AdminWssoAuthentication) SpringContextService.getBean( BEAN_ADMIN_AUTHENTICATION_MODULE );
-        Collection userList = adminWssoAuthentication.getUserList( "", "", strEmail );
+        List<AdminWssoUser> userList = WssoLdapUtil.getWssoUserListFromEmail( _context, strEmail );
         
         if ( userList.isEmpty( ) )
         {
@@ -219,8 +222,8 @@ public class WssoAdminUserImportService extends ImportAdminUserService
         {
             AdminWssoUser adminWssoUser = (AdminWssoUser)userList.toArray( )[0];
             user.setAccessCode( adminWssoUser.getAccessCode( ) );
-            user.setLastName( adminWssoUser.getLastName( ) );
-            user.setFirstName( adminWssoUser.getFirstName( ) );
+            user.setLastName( strLastName );
+            user.setFirstName( strFirstName );
             user.setEmail( strEmail );
             user.setStatus( nStatus );
             user.setUserLevel( nLevelUser );
