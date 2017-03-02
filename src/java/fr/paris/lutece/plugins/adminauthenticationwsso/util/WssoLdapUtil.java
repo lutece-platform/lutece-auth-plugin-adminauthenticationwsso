@@ -81,7 +81,7 @@ public class WssoLdapUtil
         }
         catch( Exception e)
         {
-            AppLogService.error( "Unable to open a new connection to LDAP" );
+            AppLogService.error( "Unable to open a new connection to LDAP to "+ getProviderUrl(  ) );
             return null;
         }
     }
