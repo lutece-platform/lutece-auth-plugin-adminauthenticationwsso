@@ -104,7 +104,7 @@ public class WssoAdminUserImportService extends ImportAdminUserService
         }
         
         List<CSVMessageDescriptor> listMessages = new ArrayList<CSVMessageDescriptor>( );
-        int nIndex = 0;
+        int nIndex = 1;
         
         String strLastName = strLineDataArray [nIndex++];
         String strFirstName = strLineDataArray [nIndex++];
