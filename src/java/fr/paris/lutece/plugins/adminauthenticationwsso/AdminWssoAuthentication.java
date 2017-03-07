@@ -76,6 +76,8 @@ public class AdminWssoAuthentication implements AdminAuthentication
     private static final String PROPERTY_COOKIE_LASTNAME = "adminauthenticationwsso.cookie.lastname"; // Nom de l'utilisateur
     private static final String PROPERTY_COOKIE_FIRSTNAME = "adminauthenticationwsso.cookie.firstname"; // Pr?nom de l'utilisateur
     private static final String PROPERTY_COOKIE_EMAIL = "adminauthenticationwsso.cookie.email"; // Email de l'utilisateur
+    
+    public static final String WSSO_CHANGE_PASSWORD_URL = "adminauthenticationwsso.url.changePassword"; //url de changement de password
 
     //ldap
     private static final String PROPERTY_INITIAL_CONTEXT_PROVIDER = "adminauthenticationwsso.ldap.initialContextProvider";
@@ -94,7 +96,7 @@ public class AdminWssoAuthentication implements AdminAuthentication
     private static final String ATTRIBUTE_FAMILY_NAME = AppPropertiesService.getProperty( PROPERTY_DN_ATTRIBUTE_FAMILY_NAME );
     private static final String ATTRIBUTE_GIVEN_NAME = AppPropertiesService.getProperty( PROPERTY_DN_ATTRIBUTE_GIVEN_NAME );
     private static final String ATTRIBUTE_EMAIL = AppPropertiesService.getProperty( PROPERTY_DN_ATTRIBUTE_EMAIL );
-
+    
     /* comparator for sorting - date ascendant order */
     private static final Comparator<AdminWssoUser> COMPARATOR_USER = new Comparator<AdminWssoUser>(  )
         {
@@ -252,8 +254,7 @@ public class AdminWssoAuthentication implements AdminAuthentication
      */
     public String getChangePasswordPageUrl(  )
     {
-        // TODO Auto-generated method stub
-        return null;
+        return WSSO_CHANGE_PASSWORD_URL;
     }
 
     /* (non-Javadoc)
