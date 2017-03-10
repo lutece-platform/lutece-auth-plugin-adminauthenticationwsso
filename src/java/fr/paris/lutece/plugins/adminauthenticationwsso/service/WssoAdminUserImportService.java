@@ -38,7 +38,6 @@ import fr.paris.lutece.plugins.adminauthenticationwsso.util.WssoLdapUtil;
 import fr.paris.lutece.portal.business.user.AdminUser;
 import fr.paris.lutece.portal.business.user.AdminUserHome;
 import fr.paris.lutece.portal.business.user.attribute.AdminUserField;
-import fr.paris.lutece.portal.business.user.attribute.AdminUserFieldFilter;
 import fr.paris.lutece.portal.business.user.attribute.AdminUserFieldHome;
 import fr.paris.lutece.portal.business.user.attribute.IAttribute;
 import fr.paris.lutece.portal.business.user.attribute.ISimpleValuesAttributes;
@@ -100,10 +99,13 @@ public class WssoAdminUserImportService extends ImportAdminUserService
     {
         if ( nLineNumber == 1)
         {
+            //Open a connection the the LDAP; used for all the import process.
             _context = WssoLdapUtil.getNewContext( );
         }
         
         List<CSVMessageDescriptor> listMessages = new ArrayList<CSVMessageDescriptor>( );
+        
+        //We skip the access code (because get from the LDAP, from the email)
         int nIndex = 1;
         
         String strLastName = strLineDataArray [nIndex++];
@@ -209,6 +211,7 @@ public class WssoAdminUserImportService extends ImportAdminUserService
             };
             String strErrorMessage = I18nService.getLocalizedString( MESSAGE_ERROR_USER_EMAIL_NOT_FOUND, args, locale );
             listMessages.add( new CSVMessageDescriptor(CSVMessageLevel.ERROR, nLineNumber , strErrorMessage ) );
+            AppLogService.error( "Ligne : " + nLineNumber + "  : " + strEmail + " non trouvé dans le LDAP.");
         }
         else if ( userList.size( ) > 1 )
         {
@@ -217,6 +220,7 @@ public class WssoAdminUserImportService extends ImportAdminUserService
             };
             String strErrorMessage = I18nService.getLocalizedString( MESSAGE_ERROR_SEVERAL_SAME_EMAIL, args, locale );
             listMessages.add( new CSVMessageDescriptor(CSVMessageLevel.ERROR, nLineNumber , strErrorMessage ) );
+            AppLogService.error( "Ligne : " + nLineNumber + "  : " + strEmail + " trouvé plusieurs fois dans le LDAP.");
         }
         else
         {
@@ -249,9 +253,14 @@ public class WssoAdminUserImportService extends ImportAdminUserService
             AdminUserHome.removeAllRightsForUser( user.getUserId( ) );
             AdminUserHome.removeAllRolesForUser( user.getUserId( ) );
 
-            AdminUserFieldFilter auFieldFilter = new AdminUserFieldFilter( );
-            auFieldFilter.setIdUser( user.getUserId( ) );
-            AdminUserFieldHome.removeByFilter( auFieldFilter );
+            // We remove the user fields from id user
+            AdminUserFieldHome.removeUserFieldsFromIdUser( user.getUserId( ) );
+            
+            // We notify the remove user field listener (such as field profile)
+            for ( AdminUserFieldListenerService adminUserFieldListenerService : SpringContextService.getBeansOfType( AdminUserFieldListenerService.class ) )
+            {
+                adminUserFieldListenerService.doRemoveUserFields( user, locale );
+            }
 
             // We get every attribute, role, right and workgroup of the user
             Map<Integer, List<String>> mapAttributesValues = new HashMap<Integer, List<String>>( );
