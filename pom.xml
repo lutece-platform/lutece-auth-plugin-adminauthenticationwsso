@@ -10,7 +10,7 @@
     <groupId>fr.paris.lutece.plugins</groupId>
     <artifactId>plugin-adminauthenticationwsso</artifactId>
     <packaging>lutece-plugin</packaging>
-    <version>2.1.5</version>
+    <version>2.1.6-SNAPSHOT</version>
     <name>Lutece adminauthenticationwsso plugin</name>
 
     <repositories>
@@ -41,7 +41,7 @@
         <connection>scm:git:https://github.com/lutece-platform/lutece-auth-plugin-adminauthenticationwsso.git</connection>
         <developerConnection>scm:git:https://github.com/lutece-platform/lutece-auth-plugin-adminauthenticationwsso.git</developerConnection>
         <url>https://github.com/lutece-platform/lutece-auth-plugin-adminauthenticationwsso.git</url>
-      <tag>plugin-adminauthenticationwsso-2.1.5</tag>
+      <tag>HEAD</tag>
   </scm>
     
 </project>
