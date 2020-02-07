@@ -430,7 +430,7 @@ public class AdminWssoAuthentication implements AdminAuthentication
         }
         catch ( NamingException e )
         {
-            AppLogService.error( "Error while searching for users " );
+            AppLogService.error( "Error while searching for users", e );
 
             return null;
         }
@@ -516,7 +516,7 @@ public class AdminWssoAuthentication implements AdminAuthentication
         }
         catch ( NamingException e )
         {
-            AppLogService.error( "Error while searching for users " );
+            AppLogService.error( "Error while searching for users", e );
 
             return null;
         }

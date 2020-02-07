@@ -81,7 +81,7 @@ public class WssoLdapUtil
         }
         catch( Exception e)
         {
-            AppLogService.error( "Unable to open a new connection to LDAP to "+ getProviderUrl(  ) );
+            AppLogService.error( "Unable to open a new connection to LDAP to "+ getProviderUrl(  ), e );
             return null;
         }
     }
@@ -192,7 +192,7 @@ public class WssoLdapUtil
         }
         catch ( NamingException e )
         {
-            AppLogService.error( "Error while searching for users " );
+            AppLogService.error( "Error while searching for users", e );
             return userList;
         }
     }
