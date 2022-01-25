@@ -65,7 +65,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import javax.naming.directory.DirContext;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 
 public class WssoAdminUserImportService extends ImportAdminUserService
@@ -168,7 +168,7 @@ public class WssoAdminUserImportService extends ImportAdminUserService
 
         Timestamp accountMaxValidDate = AdminUserService.getAccountMaxValidDate( );
         String strDateLastLogin = strLineDataArray [nIndex++];
-        Timestamp dateLastLogin = new Timestamp( AdminUser.DEFAULT_DATE_LAST_LOGIN.getTime( ) );
+        Timestamp dateLastLogin = new Timestamp( AdminUser.getDefaultDateLastLogin( ).getTime( ) );
 
         if ( StringUtils.isNotBlank( strDateLastLogin ) )
         {
