@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><plug-in>
    <name>Admin Authentication WSSO</name>
    <class>fr.paris.lutece.portal.service.plugin.PluginDefaultImplementation</class>
-   <version>2.1.7-SNAPSHOT</version>
+   <version>3.0.0-SNAPSHOT</version>
    <description>adminauthenticationwsso.plugin.description</description>
    <documentation/>
    <installation/>
@@ -10,9 +10,9 @@
    <provider>adminauthenticationwsso.plugin.provider</provider>
    <provider-url>http://lutece.paris.fr</provider-url>
    <icon-url>images/admin/skin/plugins/mylutece/mylutece.png</icon-url>
-   <copyright>Copyright 2001-2009 Mairie de Paris</copyright>
+   <copyright>Copyright 2001-2025 Mairie de Paris</copyright>
 	<core-version-dependency>
-		<min-core-version/>
+		<min-core-version>8.0.0</min-core-version>
 		<max-core-version/>	
 	</core-version-dependency>
 	
