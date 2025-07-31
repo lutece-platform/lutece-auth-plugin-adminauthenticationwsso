@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2002-2013, Mairie de Paris
+* Copyright (c) 2002-2025, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,6 +33,7 @@
  */
 package fr.paris.lutece.plugins.adminauthenticationwsso;
 
+import fr.paris.lutece.plugins.priority.annotation.LutecePriority;
 import fr.paris.lutece.portal.business.user.AdminUser;
 import fr.paris.lutece.portal.business.user.authentication.AdminAuthentication;
 import fr.paris.lutece.portal.service.util.AppLogService;
@@ -57,13 +58,20 @@ import javax.naming.directory.SearchResult;
 
 import javax.security.auth.login.LoginException;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Alternative;
+import jakarta.inject.Named;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 
 
 /**
  * Data authentication module for admin authentication
  */
+@ApplicationScoped
+@Named ("adminAuthenticationModule")
+@Alternative
+@LutecePriority( "adminAuthenticationModule.AdminWssoAuthentication" )
 public class AdminWssoAuthentication implements AdminAuthentication
 {
     //Constant
@@ -131,7 +139,7 @@ public class AdminWssoAuthentication implements AdminAuthentication
         super(  );
     }
 
-    /* (non-Javadoc)
+    /**
      * @see fr.paris.lutece.portal.business.user.authentication.AdminAuthentication#getAuthServiceName()
      */
     public String getAuthServiceName(  )
@@ -139,7 +147,7 @@ public class AdminWssoAuthentication implements AdminAuthentication
         return AppPropertiesService.getProperty( PROPERTY_AUTH_SERVICE_NAME );
     }
 
-    /* (non-Javadoc)
+    /**
      * @see fr.paris.lutece.portal.business.user.authentication.AdminAuthentication#getAuthType(javax.servlet.http.HttpServletRequest)
      */
     public String getAuthType( HttpServletRequest request )
@@ -170,7 +178,7 @@ public class AdminWssoAuthentication implements AdminAuthentication
         return getHttpAuthenticatedUser( request );
     }
 
-    /* (non-Javadoc)
+    /**
      * @see fr.paris.lutece.portal.business.user.authentication.AdminAuthentication#logout(fr.paris.lutece.portal.business.user.authentication.AdminUser)
      */
     public void logout( AdminUser user )
@@ -178,7 +186,7 @@ public class AdminWssoAuthentication implements AdminAuthentication
         // TODO Auto-generated method stub
     }
 
-    /* (non-Javadoc)
+    /**
      * @see fr.paris.lutece.portal.business.user.authentication.AdminAuthentication#getAnonymousUser()
      */
     public AdminUser getAnonymousUser(  )
@@ -196,7 +204,7 @@ public class AdminWssoAuthentication implements AdminAuthentication
         return true;
     }
 
-    /* (non-Javadoc)
+    /**
      * @see fr.paris.lutece.portal.business.user.authentication.AdminAuthentication#getHttpAuthenticatedUser(javax.servlet.http.HttpServletRequest)
      */
     public AdminUser getHttpAuthenticatedUser( HttpServletRequest request )
@@ -241,7 +249,7 @@ public class AdminWssoAuthentication implements AdminAuthentication
         return user;
     }
 
-    /* (non-Javadoc)
+    /**
      * @see fr.paris.lutece.portal.business.user.authentication.AdminAuthentication#getLoginPageUrl()
      */
     public String getLoginPageUrl(  )
@@ -249,7 +257,7 @@ public class AdminWssoAuthentication implements AdminAuthentication
         return null; // TODO
     }
 
-    /* (non-Javadoc)
+    /**
      * @see fr.paris.lutece.portal.business.user.authentication.AdminAuthentication#getNewAccountPageUrl()
      */
     public String getChangePasswordPageUrl(  )
@@ -257,7 +265,7 @@ public class AdminWssoAuthentication implements AdminAuthentication
         return WSSO_CHANGE_PASSWORD_URL;
     }
 
-    /* (non-Javadoc)
+    /**
      * @see fr.paris.lutece.portal.business.user.authentication.AdminAuthentication#getDoLoginUrl()
      */
     public String getDoLoginUrl(  )
@@ -266,7 +274,7 @@ public class AdminWssoAuthentication implements AdminAuthentication
         return null;
     }
 
-    /* (non-Javadoc)
+    /**
      * @see fr.paris.lutece.portal.business.user.authentication.AdminAuthentication#getDoLogoutUrl()
      */
     public String getDoLogoutUrl(  )
@@ -275,7 +283,7 @@ public class AdminWssoAuthentication implements AdminAuthentication
         return null;
     }
 
-    /* (non-Javadoc)
+    /**
      * @see fr.paris.lutece.portal.business.user.authentication.AdminAuthentication#getNewAccountPageUrl()
      */
     public String getNewAccountPageUrl(  )
@@ -284,7 +292,7 @@ public class AdminWssoAuthentication implements AdminAuthentication
         return null;
     }
 
-    /* (non-Javadoc)
+    /**
      * @see fr.paris.lutece.portal.business.user.authentication.AdminAuthentication#getViewAccountPageUrl()
      */
     public String getViewAccountPageUrl(  )
@@ -293,7 +301,7 @@ public class AdminWssoAuthentication implements AdminAuthentication
         return null;
     }
 
-    /* (non-Javadoc)
+    /**
      * @see fr.paris.lutece.portal.business.user.authentication.AdminAuthentication#getLostPasswordPageUrl()
      */
     public String getLostPasswordPageUrl(  )
@@ -302,7 +310,7 @@ public class AdminWssoAuthentication implements AdminAuthentication
         return null;
     }
     
-    /* (non-Javadoc)
+    /**
      * @see fr.paris.lutece.portal.business.user.authentication.AdminAuthentication#getLostPasswordPageUrl()
      */
     public String getLostLoginPageUrl(  )
@@ -311,7 +319,7 @@ public class AdminWssoAuthentication implements AdminAuthentication
         return null;
     }
 
-    /* (non-Javadoc)
+    /**
      * @see fr.paris.lutece.portal.business.user.authentication.AdminAuthentication#getUserList()
      */
     public Collection getUserList( String strParameterLastName, String strParameterFirstName, String strParameterEmail )
@@ -447,7 +455,7 @@ public class AdminWssoAuthentication implements AdminAuthentication
         }
     }
 
-    /* (non-Javadoc)
+    /**
      * @see fr.paris.lutece.portal.business.user.authentication.AdminAuthentication#getUserPublicData(java.lang.String)
      */
     public AdminUser getUserPublicData( String strId )

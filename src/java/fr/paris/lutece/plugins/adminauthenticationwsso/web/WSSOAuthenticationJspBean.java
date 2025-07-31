@@ -35,11 +35,14 @@ package fr.paris.lutece.plugins.adminauthenticationwsso.web;
 
 import fr.paris.lutece.plugins.adminauthenticationwsso.AdminWssoAuthentication;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Named;
 
-
+@RequestScoped
+@Named
 public class WSSOAuthenticationJspBean
 {
-    
+
     //This action provide the feature to change password ; this action should be overrided in admin header
     public String doChangeWssoPassword( )
     {

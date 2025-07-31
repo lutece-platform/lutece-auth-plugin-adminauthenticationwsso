@@ -81,6 +81,7 @@ public class WssoAdminUsersFileGeneratorService
     private static final String PROPERTY_XMLFILEFORMAT_ATTR_ALLOWED_USER_WSSO_GUID = "adminauthenticationwsso.wssofileformat.tag_wssoGUID";
     private static final String LOG_MESSAGE_OK = "\nWssoAdminUserFileGeneratorService : Update OK for file ";
     private static final String LOG_MESSAGE_NOK = "\nWssoAdminUserFileGeneratorService : Error when updating file ";
+    private static final String DEFAULT_FILE_NAME = "adminauthenticationwsso.xml";
     
     //Regex
     private static final String REGEX_WSSO_ID = AppPropertiesService.getProperty( "adminauthenticationwsso.wssoid.regex" );
@@ -89,7 +90,7 @@ public class WssoAdminUsersFileGeneratorService
      *
      * Creates a new instance of WssoAdminUsersFileGeneratorService
      */
-    public WssoAdminUsersFileGeneratorService(  )
+    private WssoAdminUsersFileGeneratorService(  )
     {
     }
 
@@ -172,8 +173,9 @@ public class WssoAdminUsersFileGeneratorService
 
         //String buffer for building the response page
         StringBuffer sbLogs = new StringBuffer(  );
-        String strFileName = AppPropertiesService.getProperty( PROPERTY_XML_FILE_NAME );
-        String strFolderPath = AppPathService.getPath( PROPERTY_XML_STORAGE_FOLDER_PATH, "" );
+
+        String strFileName = AppPropertiesService.getProperty( PROPERTY_XML_FILE_NAME, DEFAULT_FILE_NAME );
+        String strFolderPath = AppPathService.getExportPath( ) + AppPropertiesService.getProperty( PROPERTY_XML_STORAGE_FOLDER_PATH, "");
 
         try
         {
@@ -185,7 +187,8 @@ public class WssoAdminUsersFileGeneratorService
             }
 
             // Creates a temporary XML file
-            File fileXml = new File( strFolderPath + strFileName );
+            File fileXml = new File( strFolderPath , strFileName );
+            
             File fileXmlDirectory = new File( strFolderPath );
             File fileXmlTemp = File.createTempFile( "tmp", null, fileXmlDirectory );
             fileXmlWriter = new FileWriter( fileXmlTemp );
@@ -218,9 +221,9 @@ public class WssoAdminUsersFileGeneratorService
      */
     public static void removeXmlFile(  )
     {
-        String strFileXml = AppPathService.getPath( PROPERTY_XML_STORAGE_FOLDER_PATH, "" ) +
-            AppPropertiesService.getProperty( PROPERTY_XML_FILE_NAME );
-        File file = new File( strFileXml );
+        String strFileName = AppPropertiesService.getProperty( PROPERTY_XML_FILE_NAME, DEFAULT_FILE_NAME );
+        String strFolderPath = AppPathService.getExportPath( ) + AppPropertiesService.getProperty( PROPERTY_XML_STORAGE_FOLDER_PATH, "");
+        File file = new File( strFolderPath , strFileName );
 
         // Deletes the file if the file exists
         if ( file.exists(  ) )
