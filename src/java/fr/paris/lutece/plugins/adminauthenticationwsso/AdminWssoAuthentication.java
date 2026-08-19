@@ -205,6 +205,15 @@ public class AdminWssoAuthentication implements AdminAuthentication
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isUserIdentityEditable( )
+    {
+        return false;
+    }
+
+    /**
      * @see fr.paris.lutece.portal.business.user.authentication.AdminAuthentication#getHttpAuthenticatedUser(javax.servlet.http.HttpServletRequest)
      */
     public AdminUser getHttpAuthenticatedUser( HttpServletRequest request )
