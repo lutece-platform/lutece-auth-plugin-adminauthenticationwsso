@@ -81,6 +81,7 @@ public class WssoAdminUsersFileGeneratorService
     private static final String PROPERTY_XMLFILEFORMAT_ATTR_ALLOWED_USER_WSSO_GUID = "adminauthenticationwsso.wssofileformat.tag_wssoGUID";
     private static final String LOG_MESSAGE_OK = "\nWssoAdminUserFileGeneratorService : Update OK for file ";
     private static final String LOG_MESSAGE_NOK = "\nWssoAdminUserFileGeneratorService : Error when updating file ";
+    private static final String LOG_MESSAGE_NOT_CONFIGURED = "\nWssoAdminUserFileGeneratorService : export not configured, nothing done. Set adminauthenticationwsso.path and adminauthenticationwsso.fileName to enable it.";
     
     //Regex
     private static final String REGEX_WSSO_ID = AppPropertiesService.getProperty( "adminauthenticationwsso.wssoid.regex" );
@@ -162,6 +163,44 @@ public class WssoAdminUsersFileGeneratorService
     }
 
     /**
+     * Tells whether the WSSO export is configured, that is whether the location of the file to
+     * produce is known.
+     *
+     * <p>
+     * The properties file ships every value of this block empty, as a template :
+     * adminauthenticationwsso.path, .fileName, .appID and .appResponsable. On a site that never
+     * filled them in, AppPathService.getPath used to throw an AppException, so the daemon logged
+     * a stack trace on every run - hourly by default, since the plugin ships
+     * daemon.ExportWssoAdminUsersDaemon.interval=3600 and onstartup=1.
+     * </p>
+     *
+     * <p>
+     * Beware of what "empty" means here : since the v7 line of lutece-core resolves properties
+     * through MicroProfile Config, AppPropertiesService.getProperty returns null for a declared
+     * but empty value, not the empty string. Both cases have to be treated the same way.
+     * </p>
+     *
+     * @return true when the export can run
+     */
+    private static boolean isExportConfigured(  )
+    {
+        return !isBlank( AppPropertiesService.getProperty( PROPERTY_XML_STORAGE_FOLDER_PATH ) ) &&
+            !isBlank( AppPropertiesService.getProperty( PROPERTY_XML_FILE_NAME ) );
+    }
+
+    /**
+     * Tells whether a property value is absent or holds only whitespace.
+     *
+     * @param strValue
+     *            The value to test
+     * @return true when the value carries nothing usable
+     */
+    private static boolean isBlank( String strValue )
+    {
+        return ( strValue == null ) || strValue.trim(  ).isEmpty(  );
+    }
+
+    /**
      * Create or update the XML file with the getXml content
      *
      * @param plugin the plugin
@@ -172,6 +211,14 @@ public class WssoAdminUsersFileGeneratorService
 
         //String buffer for building the response page
         StringBuffer sbLogs = new StringBuffer(  );
+
+        if ( !isExportConfigured(  ) )
+        {
+            AppLogService.info( LOG_MESSAGE_NOT_CONFIGURED );
+
+            return LOG_MESSAGE_NOT_CONFIGURED;
+        }
+
         String strFileName = AppPropertiesService.getProperty( PROPERTY_XML_FILE_NAME );
         String strFolderPath = AppPathService.getPath( PROPERTY_XML_STORAGE_FOLDER_PATH, "" );
 
@@ -218,6 +265,11 @@ public class WssoAdminUsersFileGeneratorService
      */
     public static void removeXmlFile(  )
     {
+        if ( !isExportConfigured(  ) )
+        {
+            return;
+        }
+
         String strFileXml = AppPathService.getPath( PROPERTY_XML_STORAGE_FOLDER_PATH, "" ) +
             AppPropertiesService.getProperty( PROPERTY_XML_FILE_NAME );
         File file = new File( strFileXml );
