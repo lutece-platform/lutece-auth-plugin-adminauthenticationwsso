@@ -155,6 +155,12 @@ public class AdminWssoAuthentication implements AdminAuthentication
         Cookie[] cookies = request.getCookies(  );
         String strAuthType = request.getAuthType(  );
 
+        // No cookie at all (first request, health check) : keep the container auth type
+        if ( cookies == null )
+        {
+            return strAuthType;
+        }
+
         for ( int i = 0; i < cookies.length; i++ )
         {
             Cookie cookie = cookies[i];
@@ -224,6 +230,12 @@ public class AdminWssoAuthentication implements AdminAuthentication
         String strFamilyName = null;
         String strGivenName = null;
         String strEmail = "";
+
+        // No cookie at all (first request, health check) : no WSSO user
+        if ( cookies == null )
+        {
+            return null;
+        }
 
         for ( int i = 0; i < cookies.length; i++ )
         {
