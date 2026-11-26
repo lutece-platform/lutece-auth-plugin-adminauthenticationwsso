@@ -86,7 +86,8 @@ public class WssoAdminUserImportService extends ImportAdminUserService
     private static final String CONSTANT_RIGHT = "right";
     private static final String CONSTANT_ROLE = "role";
     private static final String CONSTANT_WORKGROUP = "workgroup";
-    private static final int CONSTANT_MINIMUM_COLUMNS_PER_LINE = 9;
+    // The 12 fixed columns of the core export are read (indexes 0 to 11), then the roles, rights, workgroups and attributes
+    private static final int CONSTANT_MINIMUM_COLUMNS_PER_LINE = 12;
     // Column of the e-mail: access code, last name, first name, e-mail
     private static final int CONSTANT_INDEX_EMAIL = 3;
     

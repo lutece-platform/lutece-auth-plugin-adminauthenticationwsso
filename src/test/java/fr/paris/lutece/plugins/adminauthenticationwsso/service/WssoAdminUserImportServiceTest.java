@@ -41,6 +41,7 @@ import org.junit.jupiter.api.Test;
 
 import fr.paris.lutece.portal.business.user.AdminUser;
 import fr.paris.lutece.portal.business.user.AdminUserHome;
+import fr.paris.lutece.portal.service.i18n.I18nService;
 import fr.paris.lutece.test.LuteceTestCase;
 import fr.paris.lutece.portal.service.csv.CSVMessageDescriptor;
 import fr.paris.lutece.portal.service.csv.CSVMessageLevel;
@@ -103,5 +104,34 @@ public class WssoAdminUserImportServiceTest extends LuteceTestCase
 
         org.junit.jupiter.api.Assertions.assertEquals( EMAIL, service.getEmail( line ) );
         org.junit.jupiter.api.Assertions.assertTrue( hasError( service.check( line ) ), "an existing e-mail must be refused when the update box is unchecked" );
+    }
+
+    /**
+     * AY-18: a line shorter than the 12 fixed columns read by the import is refused by the column check, not by an unknown error later
+     */
+    @Test
+    public void testLineShorterThanFixedColumnsRefused( )
+    {
+        TestableImportService service = new TestableImportService( );
+        service.setUpdateExistingUsers( true );
+        String [ ] line = {
+                "guid", "Dupont", "Jean", "ay18@e2e.fr", "0", "fr", "3", "false", "false", "", ""
+        };
+
+        org.junit.jupiter.api.Assertions.assertTrue( hasError( service.check( line ) ), "an 11-column line must be refused by the column check" );
+    }
+
+    /**
+     * AY-18: the help text of the import screen lists the access code first, as the code reads it, and points to the export, in both languages
+     */
+    @Test
+    public void testHelpTextListsTheAccessCodeFirst( )
+    {
+        String strFr = I18nService.getLocalizedString( "adminauthenticationwsso.import_users_from_file.labelListColumns", Locale.FRENCH );
+        String strEn = I18nService.getLocalizedString( "adminauthenticationwsso.import_users_from_file.labelListColumns", Locale.ENGLISH );
+
+        org.junit.jupiter.api.Assertions.assertTrue( strFr.indexOf( "code" ) >= 0 && strFr.indexOf( "code" ) < strFr.indexOf( "nom" ), strFr );
+        org.junit.jupiter.api.Assertions.assertTrue( strEn.indexOf( "code" ) >= 0 && strEn.indexOf( "code" ) < strEn.indexOf( "lastname" ), strEn );
+        org.junit.jupiter.api.Assertions.assertTrue( strFr.contains( "export" ) && strEn.contains( "export" ), "both help texts point to the users export as the example" );
     }
 }
