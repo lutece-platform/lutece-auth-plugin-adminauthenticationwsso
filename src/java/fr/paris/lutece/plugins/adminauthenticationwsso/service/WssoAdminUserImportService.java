@@ -87,6 +87,8 @@ public class WssoAdminUserImportService extends ImportAdminUserService
     private static final String CONSTANT_ROLE = "role";
     private static final String CONSTANT_WORKGROUP = "workgroup";
     private static final int CONSTANT_MINIMUM_COLUMNS_PER_LINE = 9;
+    // Column of the e-mail: access code, last name, first name, e-mail
+    private static final int CONSTANT_INDEX_EMAIL = 3;
     
     //Template
     private static final String TEMPLATE_WSSO_IMPORT_USERS_FROM_FILE = "admin/plugins/adminauthenticationwsso/import_wsso_users_from_file.html";
@@ -125,9 +127,9 @@ public class WssoAdminUserImportService extends ImportAdminUserService
         String strFirstName = strLineDataArray [nIndex++];
         String strEmail = strLineDataArray [nIndex++];
 
-        boolean bUpdateUser = getUpdateExistingUsers( );
+        // An existing admin is updated only when « update existing users » is checked; otherwise the core line check has refused the line
         int nEmailUserId = AdminUserHome.checkEmailAlreadyInUse( strEmail );
-        bUpdateUser = nEmailUserId > 0;
+        boolean bUpdateUser = getUpdateExistingUsers( ) && nEmailUserId > 0;
         String strStatus = strLineDataArray [nIndex++];
         int nStatus = 0;
 
@@ -465,7 +467,8 @@ public class WssoAdminUserImportService extends ImportAdminUserService
     @Override
     public String getAccessCode( String [ ] strLineDataArray )
     {
-        return AdminUserHome.findUserByEmail( strLineDataArray [0] );
+        // The access code of the file is ignored (it comes from the LDAP): the admin is identified by the e-mail
+        return AdminUserHome.findUserByEmail( getEmail( strLineDataArray ) );
     }
     
     /**
@@ -474,6 +477,6 @@ public class WssoAdminUserImportService extends ImportAdminUserService
     @Override
     public String getEmail( String [ ] strLineDataArray )
     {
-        return strLineDataArray [0];
+        return strLineDataArray [CONSTANT_INDEX_EMAIL];
     }
 }
